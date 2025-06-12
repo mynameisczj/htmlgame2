@@ -57,25 +57,32 @@ class LossAversionExperiment {
         });
     }
     
-    submitAnswers() {
-        // 收集所有答案
-        const answers = [];
-        for (let i = 1; i <= 7; i++) {
-            const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
-            if (!selectedOption) {
-                alert(`请回答问题${i}`);
-                return;
+    async submitAnswers() {
+        console.log('开始提交答案');
+        try {
+            // 收集所有答案
+            const answers = [];
+            for (let i = 1; i <= 7; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selectedOption) {
+                    alert(`请回答问题${i}`);
+                    return;
+                }
+                answers.push(selectedOption.value);
             }
-            answers.push(selectedOption.value);
+            console.log('收集到的答案:', answers);
+            
+            // 分析答案
+            this.analyzeAnswers(answers);
+            
+            // 显示结果
+            this.questionsContainer.classList.add('hidden');
+            this.resultContainer.classList.remove('hidden');
+            this.consentForm.classList.remove('hidden');
+        } catch (error) {
+            console.error('提交答案时出错:', error);
+            alert('提交过程中发生错误，请重试');
         }
-        
-        // 分析答案
-        this.analyzeAnswers(answers);
-        
-        // 显示结果
-        this.questionsContainer.classList.add('hidden');
-        this.resultContainer.classList.remove('hidden');
-        this.consentForm.classList.remove('hidden');
     }
     
     analyzeAnswers(answers) {
