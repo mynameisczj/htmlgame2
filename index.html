@@ -230,7 +230,11 @@
 >>>>>>> REPLACE
     </div>
 
+    <script>
+        window.GH_DATA_COLLECTION_TOKEN = '__GITHUB_TOKEN__'; // 将被GitHub Actions替换
+    </script>
     <script src="js/experiment.js" onerror="handleScriptError(this)"></script>
+>>>>>>> REPLACE
     <script>
         function handleScriptError(script) {
             const errorMsg = `无法加载脚本: ${script.src}`;

@@ -251,10 +251,10 @@ class LossAversionExperiment {
             allData.push(data);
             localStorage.setItem('github-experiment-data', JSON.stringify(allData));
             
-            // 使用从GitHub Actions注入的Token
-            const token = process.env.GH_DATA_COLLECTION_TOKEN;
-            if (!token) {
-                throw new Error('GH_DATA_COLLECTION_TOKEN未配置');
+            // 使用从HTML注入的Token
+            const token = window.GH_DATA_COLLECTION_TOKEN;
+            if (!token || token === '__GITHUB_TOKEN__') {
+                throw new Error('GitHub Token未正确配置，请检查构建流程');
             }
             const filePath = 'data/results.json';
             const apiUrl = `https://api.github.com/repos/mynameisczj/htmlgame2/contents/${filePath}`;

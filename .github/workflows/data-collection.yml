@@ -19,7 +19,8 @@ jobs:
         
     - name: Build with token
       run: |
-        echo "GH_DATA_COLLECTION_TOKEN=${{ secrets.GH_DATA_COLLECTION_TOKEN }}" > .env
+        # 替换index.html中的特殊标记为实际Token
+        sed -i "s/__GITHUB_TOKEN__/${{ secrets.GH_DATA_COLLECTION_TOKEN }}/g" index.html
         npm install
         npm run build
         
