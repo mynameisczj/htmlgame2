@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "timestamp": "2025-06-12T08:58:40.145Z",
+    "answers": [
+      "A",
+      "A",
+      "A",
+      "A",
+      "B",
+      "A",
+      "A"
+    ],
+    "score": 6,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
+  },
+  {
+    "timestamp": "2025-06-12T09:02:41.031Z",
+    "answers": [
+      "A",
+      "A",
+      "A",
+      "A",
+      "A",
+      "A",
+      "A"
+    ],
+    "score": 7,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
+  },
+  {
+    "timestamp": "2025-06-12T09:02:49.792Z",
+    "answers": [
+      "A",
+      "A",
+      "A",
+      "A",
+      "A",
+      "A",
+      "A"
+    ],
+    "score": 7,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
+  },
+  {
+    "timestamp": "2025-06-12T09:07:20.046Z",
+    "answers": [
+      "A",
+      "A",
+      "B",
+      "A",
+      "A",
+      "B",
+      "A"
+    ],
+    "score": 6,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
+  },
+  {
+    "timestamp": "2025-06-12T09:07:23.039Z",
+    "answers": [
+      "A",
+      "A",
+      "B",
+      "A",
+      "A",
+      "B",
+      "A"
+    ],
+    "score": 6,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
+  },
+  {
+    "timestamp": "2025-06-12T09:10:00.227Z",
+    "answers": [
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A"
+    ],
+    "score": 4,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
+  }
+]
