@@ -40,7 +40,11 @@ module.exports = async (req, res) => {
 
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error('GitHub API Error:', response.status, errorBody);
+      console.error('GitHub API Error:', {
+        status: response.status,
+        error: errorBody,
+        tokenUsed: process.env.GH_DATA_COLLECTION_TOKEN ? '*****' : 'NOT SET'
+      });
       throw new Error(`GitHub API Error: ${response.status} - ${errorBody}`);
     }
 
