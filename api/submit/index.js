@@ -39,9 +39,12 @@ module.exports = async (req, res) => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to trigger workflow');
+      const errorBody = await response.text();
+      console.error('GitHub API Error:', response.status, errorBody);
+      throw new Error(`GitHub API Error: ${response.status} - ${errorBody}`);
     }
 
+    console.log('Successfully triggered GitHub workflow');
     res.status(200).send('Data submitted successfully');
   } catch (error) {
     console.error('Error:', error);
