@@ -1,17 +1,26 @@
-// GitHub Pages API端点处理脚本
-const fs = require('fs');
-const path = require('path');
-
+// GitHub数据提交处理脚本
 module.exports = async (req, res) => {
+  // 设置CORS头
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
   if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
   }
 
   try {
     const data = req.body;
-    const timestamp = new Date().toISOString();
     
-    // 触发GitHub Actions工作流 (使用GH_DATA_COLLECTION_TOKEN)
+    // 基本数据验证
+    if (!data.answers || !Array.isArray(data.answers)) {
+      return res.status(400).send('Invalid data format');
+    }
+
+    // 触发GitHub Actions工作流
     if (!process.env.GH_DATA_COLLECTION_TOKEN || !process.env.REPO_OWNER || !process.env.REPO_NAME) {
       throw new Error('Missing required environment variables');
     }

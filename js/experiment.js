@@ -246,27 +246,37 @@ class LossAversionExperiment {
                 userAgent: navigator.userAgent
             };
 
-            // 这里替换为你的实际API端点
-            const response = await fetch('https://your-api-endpoint.com/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
+            // 尝试提交到API
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
 
-            if (!response.ok) {
-                throw new Error('数据提交失败');
+                if (!response.ok) {
+                    throw new Error('API提交失败');
+                }
+                
+                this.dataSubmitBtn.textContent = '提交成功';
+            } catch (apiError) {
+                console.log('API提交失败，尝试本地存储:', apiError);
+                // 保存到localStorage作为备用
+                const savedData = JSON.parse(localStorage.getItem('experimentData') || '[]');
+                savedData.push(data);
+                localStorage.setItem('experimentData', JSON.stringify(savedData));
+                this.dataSubmitBtn.textContent = '数据已本地保存';
             }
 
-            this.dataSubmitBtn.textContent = '提交成功';
             setTimeout(() => {
                 this.dataSubmitBtn.textContent = '提交数据';
                 this.dataSubmitBtn.disabled = false;
             }, 2000);
         } catch (error) {
             console.error('提交错误:', error);
-            this.dataSubmitBtn.textContent = '提交失败，请重试';
+            this.dataSubmitBtn.textContent = '提交失败';
             this.dataSubmitBtn.disabled = false;
         }
     }
