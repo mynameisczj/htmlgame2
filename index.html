@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>损失厌恶心理学实验</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .experiment-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .question label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+        }
+        .option input {
+            margin-right: 10px;
+        }
+        #submit-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #submit-btn:hover {
+            background-color: #2980b9;
+        }
+        #result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        #chart-container {
+            margin: 30px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .consent-form {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f4f8;
+            border-radius: 5px;
+        }
+        #loading-message {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-message">实验加载中，请稍候...</div>
+    
+    <h1>损失厌恶心理学实验</h1>
+    
+    <div class="experiment-container">
+        <div id="questions-container">
+            <!-- 问题1 -->
+            <div class="question" id="q1">
+                <label>问题1: 请选择:</label>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q1-a" name="q1" value="A">
+                        <label for="q1-a">A) 50%概率获得1000元</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1-b" name="q1" value="B">
+                        <label for="q1-b">B) 100%概率获得500元</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 问题2 -->
+            <div class="question" id="q2">
+                <label>问题2: 请选择:</label>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q2-a" name="q2" value="A">
+                        <label for="q2-a">A) 50%概率损失1000元</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2-b" name="q2" value="B">
+                        <label for="q2-b">B) 100%概率损失500元</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 问题3 -->
+            <div class="question" id="q3">
+                <label>问题3: 请选择:</label>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q3-a" name="q3" value="A">
+                        <label for="q3-a">A) 50%概率获得1100元，50%概率损失100元</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3-b" name="q3" value="B">
+                        <label for="q3-b">B) 什么都不做</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 问题4 -->
+            <div class="question" id="q4">
+                <label>问题4: 请选择:</label>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q4-a" name="q4" value="A">
+                        <label for="q4-a">A) 手术存活率90%</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4-b" name="q4" value="B">
+                        <label for="q4-b">B) 手术死亡率10%</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 问题5 -->
+            <div class="question" id="q5">
+                <label>问题5: 你已花50元买电影票，到场发现票丢了，你会:</label>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q5-a" name="q5" value="A">
+                        <label for="q5-a">A) 再花50元买票</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5-b" name="q5" value="B">
+                        <label for="q5-b">B) 放弃观看</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 问题6 -->
+            <div class="question" id="q6">
+                <label>问题6: 哪种损失方式让你更难受:</label>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q6-a" name="q6" value="A">
+                        <label for="q6-a">A) 立即损失1000元</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6-b" name="q6" value="B">
+                        <label for="q6-b">B) 分10天每天损失100元</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 问题7 -->
+            <div class="question" id="q7">
+                <label>问题7: 你投资亏损后，会:</label>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q7-a" name="q7" value="A">
+                        <label for="q7-a">A) 冒险追求高回报翻本</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7-b" name="q7" value="B">
+                        <label for="q7-b">B) 保守避免进一步损失</label>
+                    </div>
+                </div>
+            </div>
+            
+    <button id="submit-btn" type="button">提交答案</button>
+        </div>
+        
+        <div id="result-container" class="hidden">
+            <h2>你的损失厌恶分析报告</h2>
+            <div id="analysis-result"></div>
+            <div id="chart-container">
+                <canvas id="behavior-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 数据提交同意表单 -->
+    <div id="consent-form" class="consent-form hidden">
+        <h2>数据提交</h2>
+        <p>实验已完成！您可以选择提交您的匿名实验数据以帮助心理学研究。</p>
+        <div class="option">
+            <input type="checkbox" id="consent-checkbox">
+            <label for="consent-checkbox">我同意提交匿名实验数据</label>
+        </div>
+        <button id="data-submit-btn" disabled>提交数据</button>
+    </div>
+
+    <script>
+        // 配置GitHub信息
+        const REPO_OWNER = 'mynameisczj';
+        const REPO_NAME = 'htmlgame2';
+    </script>
+    <script src="js/experiment.js"></script>
+</body>
+</html>
