@@ -251,11 +251,19 @@ class LossAversionExperiment {
             allData.push(data);
             localStorage.setItem('github-experiment-data', JSON.stringify(allData));
             
+            // 添加版本检查
+            if (!window.APP_VERSION || window.APP_VERSION !== '1.0.2') {
+                console.warn('检测到旧版本代码，请强制刷新页面(Ctrl+F5)');
+            }
+            
             // 使用从HTML注入的Token
             const token = window.GH_DATA_COLLECTION_TOKEN;
             if (!token || token === '__GITHUB_TOKEN__') {
-                throw new Error('GitHub Token未正确配置，请检查构建流程');
+                const errorMsg = 'GitHub Token未正确配置，请检查：\n1. 仓库Settings > Secrets中已配置GH_DATA_COLLECTION_TOKEN\n2. GitHub Actions构建日志无错误\n3. 已清除浏览器缓存';
+                throw new Error(errorMsg);
             }
+
+
             
             // 确保使用正确的仓库路径
             const repoPath = window.location.pathname.split('/').slice(1,3).join('/');
