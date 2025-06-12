@@ -21,11 +21,11 @@ module.exports = async (req, res) => {
     }
 
     // 触发GitHub Actions工作流
-    if (!process.env.GH_DATA_COLLECTION_TOKEN || !process.env.REPO_OWNER || !process.env.REPO_NAME) {
-      throw new Error('Missing required environment variables');
+    if (!process.env.GH_DATA_COLLECTION_TOKEN) {
+      throw new Error('Missing GitHub token');
     }
     
-    const response = await fetch(`https://api.github.com/repos/${process.env.REPO_OWNER}/${process.env.REPO_NAME}/dispatches`, {
+    const response = await fetch('https://api.github.com/repos/mynameisczj/htmlgame2/dispatches', {
       method: 'POST',
       headers: {
         'Authorization': `token ${process.env.GH_DATA_COLLECTION_TOKEN}`,
