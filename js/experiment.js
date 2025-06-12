@@ -10,26 +10,33 @@ class LossAversionExperiment {
         this.consentCheckbox = document.getElementById('consent-checkbox');
         this.loadingMessage = document.getElementById('loading-message');
         
+        // 检查元素是否存在
+        if (!this.submitBtn) {
+            console.error('提交按钮未找到！');
+            return;
+        }
+
         // 初始化图表
         this.chart = null;
         this.initChart();
         
         // 绑定事件
-        this.submitBtn.addEventListener('click', () => {
-            console.log('Submit button clicked');
-            this.submitAnswers();
-        });
+        this.submitBtn.addEventListener('click', () => this.submitAnswers());
         this.dataSubmitBtn.addEventListener('click', () => this.submitData());
         this.consentCheckbox.addEventListener('change', (e) => {
             this.dataSubmitBtn.disabled = !e.target.checked;
         });
         
         // 隐藏加载消息
-        this.loadingMessage.classList.add('hidden');
+        if (this.loadingMessage) {
+            this.loadingMessage.classList.add('hidden');
+        }
     }
     
     initChart() {
-        const ctx = document.getElementById('behavior-chart').getContext('2d');
+        const ctx = document.getElementById('behavior-chart')?.getContext('2d');
+        if (!ctx) return;
+        
         this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -70,7 +77,6 @@ class LossAversionExperiment {
                 }
                 answers.push(selectedOption.value);
             }
-            console.log('收集到的答案:', answers);
             
             // 分析答案
             this.analyzeAnswers(answers);
@@ -79,6 +85,9 @@ class LossAversionExperiment {
             this.questionsContainer.classList.add('hidden');
             this.resultContainer.classList.remove('hidden');
             this.consentForm.classList.remove('hidden');
+            
+            // 滚动到结果区域
+            this.resultContainer.scrollIntoView({ behavior: 'smooth' });
         } catch (error) {
             console.error('提交答案时出错:', error);
             alert('提交过程中发生错误，请重试');
@@ -191,6 +200,8 @@ class LossAversionExperiment {
     }
     
     updateChart(answers) {
+        if (!this.chart) return;
+        
         const questions = [
             "Q1: 收益选择", 
             "Q2: 损失选择", 
@@ -235,7 +246,8 @@ class LossAversionExperiment {
                 userAgent: navigator.userAgent
             };
 
-            const response = await fetch('/api/submit', {
+            // 这里替换为你的实际API端点
+            const response = await fetch('https://your-api-endpoint.com/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
