@@ -202,9 +202,9 @@
                     </div>
                 </div>
             </div>
-            
-    <button id="submit-btn" type="button">提交答案</button>
         </div>
+        
+        <button id="submit-btn" type="button">提交答案</button>
         
         <div id="result-container" class="hidden">
             <h2>你的损失厌恶分析报告</h2>
@@ -226,11 +226,36 @@
         <button id="data-submit-btn" disabled>提交数据</button>
     </div>
 
+    <script src="js/experiment.js" onerror="handleScriptError(this)"></script>
     <script>
-        // 配置GitHub信息
-        const REPO_OWNER = 'mynameisczj';
-        const REPO_NAME = 'htmlgame2';
+        function handleScriptError(script) {
+            const errorMsg = `无法加载脚本: ${script.src}`;
+            console.error(errorMsg);
+            const loadingMsg = document.getElementById('loading-message');
+            if (loadingMsg) {
+                loadingMsg.textContent = errorMsg;
+            }
+            alert(errorMsg + '\n请检查文件路径是否正确');
+        }
+
+        // 确保DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                if (typeof LossAversionExperiment === 'function') {
+                    new LossAversionExperiment();
+                    console.log('实验初始化成功');
+                } else {
+                    throw new Error('实验脚本未正确加载');
+                }
+            } catch (error) {
+                console.error('初始化失败:', error);
+                const loadingMsg = document.getElementById('loading-message');
+                if (loadingMsg) {
+                    loadingMsg.textContent = '页面加载失败: ' + error.message;
+                }
+                alert('页面加载失败: ' + error.message + '\n请检查控制台获取详细信息');
+            }
+        });
     </script>
-    <script src="js/experiment.js"></script>
 </body>
 </html>
