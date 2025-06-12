@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     const response = await fetch(`https://api.github.com/repos/${process.env.REPO_OWNER}/${process.env.REPO_NAME}/dispatches`, {
       method: 'POST',
       headers: {
-        'Authorization': `token ${process.env.GITHUB_TOKEN}`,
+                'Authorization': `token ${process.env.GH_DATA_COLLECTION_TOKEN || process.env.GITHUB_TOKEN}`,
         'Accept': 'application/vnd.github.everest-preview+json',
         'Content-Type': 'application/json'
       },
