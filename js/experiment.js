@@ -251,10 +251,25 @@ class LossAversionExperiment {
             allData.push(data);
             localStorage.setItem('github-experiment-data', JSON.stringify(allData));
             
-            // 使用硬编码的GitHub Token (安全风险提示: 不要在生产环境这样做)
-            const token = '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';
+            // 添加版本检查
+            if (!window.APP_VERSION || window.APP_VERSION !== '1.0.2') {
+                console.warn('检测到旧版本代码，请强制刷新页面(Ctrl+F5)');
+            }
+            
+            // 使用从HTML注入的Token
+            const token = window.GH_DATA_COLLECTION_TOKEN;
+            if (!token || token === '__GITHUB_TOKEN__') {
+                const errorMsg = 'GitHub Token未正确配置，请检查：\n1. 仓库Settings > Secrets中已配置GH_DATA_COLLECTION_TOKEN\n2. GitHub Actions构建日志无错误\n3. 已清除浏览器缓存';
+                throw new Error(errorMsg);
+            }
+
+
+            
+            // 确保使用正确的仓库路径
+            const repoPath = window.location.pathname.split('/').slice(1,3).join('/');
             const filePath = 'data/results.json';
-            const apiUrl = `https://api.github.com/repos/mynameisczj/htmlgame2/contents/${filePath}`;
+            const apiUrl = `https://api.github.com/repos/${repoPath}/contents/${filePath}`;
+
 
             // 1. 首先尝试获取现有文件sha
             let sha = null;
