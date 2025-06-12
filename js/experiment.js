@@ -256,8 +256,12 @@ class LossAversionExperiment {
             if (!token || token === '__GITHUB_TOKEN__') {
                 throw new Error('GitHub Token未正确配置，请检查构建流程');
             }
+            
+            // 确保使用正确的仓库路径
+            const repoPath = window.location.pathname.split('/').slice(1,3).join('/');
             const filePath = 'data/results.json';
-            const apiUrl = `https://api.github.com/repos/mynameisczj/htmlgame2/contents/${filePath}`;
+            const apiUrl = `https://api.github.com/repos/${repoPath}/contents/${filePath}`;
+
 
             // 1. 首先尝试获取现有文件sha
             let sha = null;
