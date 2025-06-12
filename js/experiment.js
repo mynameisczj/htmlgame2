@@ -246,17 +246,57 @@ class LossAversionExperiment {
                 userAgent: navigator.userAgent
             };
 
-            const response = await fetch('/api/submit', {
-                method: 'POST',
+            // 1. 首先从localStorage获取或初始化数据
+            let allData = JSON.parse(localStorage.getItem('github-experiment-data') || '[]');
+            allData.push(data);
+            localStorage.setItem('github-experiment-data', JSON.stringify(allData));
+            
+            // 使用硬编码的GitHub Token (安全风险提示: 不要在生产环境这样做)
+            const token = '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';
+            const filePath = 'data/results.json';
+            const apiUrl = `https://api.github.com/repos/mynameisczj/htmlgame2/contents/${filePath}`;
+
+            // 1. 首先尝试获取现有文件sha
+            let sha = null;
+            try {
+                const getResponse = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (getResponse.ok) {
+                    const fileData = await getResponse.json();
+                    sha = fileData.sha;
+                }
+            } catch (error) {
+                console.log('文件不存在，将创建新文件');
+            }
+
+            // 2. 提交数据
+            const response = await fetch(apiUrl, {
+                method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    message: `Add new experiment data ${timestamp}`,
+                    content: btoa(JSON.stringify(allData, null, 2)),
+                    sha: sha
+                })
             });
 
             if (!response.ok) {
-                throw new Error('提交到GitHub失败');
+                const error = await response.json();
+                throw new Error(`GitHub提交失败: ${error.message}`);
             }
+
+            // 4. 保存文件sha用于后续更新
+            const result = await response.json();
+            localStorage.setItem('github-file-sha', result.content.sha);
             
             this.dataSubmitBtn.textContent = '提交成功';
             setTimeout(() => {
