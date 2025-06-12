@@ -2,7 +2,7 @@ name: Data Collection CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ new-branch ]
   workflow_dispatch:
 
 jobs:
@@ -20,12 +20,13 @@ jobs:
     - name: Build with token
       run: |
         # 替换index.html中的特殊标记为实际Token
-        sed -i "s/__GITHUB_TOKEN__/${{ secrets.GH_DATA_COLLECTION_TOKEN }}/g" index.html
+        sed -i "s/__GH_DATA_TOKEN__/${{ secrets.GH_DATA_COLLECTION_TOKEN }}/g" index.html
+
         npm install
         npm run build
         
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GH_DATA_COLLECTION_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build
